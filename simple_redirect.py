@@ -199,7 +199,7 @@ def dump_urls(sess,splash_url,id_param):
     for u in urls:
 
         sep='-'*(slen+17)
-        m=  f'{sep}\n- {yellow("Splash Link")}:   {u.splash_link}\n'\
+        m=  f'{sep}\n- {yellow("Splash Link")}: {u.splash_link}\n'\
             f'- {yellow("Redirect URL")}: {u.redirect_url}\n{sep}\n'
         print(m)
 
@@ -232,7 +232,7 @@ def dump_logs(sess,splash_url,id_param):
 
             tpl = ru.to_urltuple(splash_url,id_param) 
 
-            m = f'-   {yellow("Splash Link")}: {tpl.splash_link}\n'\
+            m = f'- {yellow("Splash Link")}: {tpl.splash_link}\n'\
                 f'- {yellow("Redirect URL")}: {tpl.redirect_url}\n'\
                 f'- {yellow("Access Logs")}:\n\n'
 

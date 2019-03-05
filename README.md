@@ -34,7 +34,7 @@ Initializing a Simple Redirector
 
 [+] Dumping access logs to stdout
 ------------------------------------------------------------
--   Splash Link: https://hr.phishingdomain.net?sid=5747
+- Splash Link: https://hr.phishingdomain.net?sid=5747
 - Redirect URL: https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=vic2@targetdomain.com&mkt=&lc=
 - Access Logs:
 
@@ -88,22 +88,22 @@ Initializing a Simple Redirector
 [+] Watching URL file: redirect_urls.txt
 [+] To avoid having to restart the server, append new URLs to the file above for new links to be generated and printed to stdout
 ----------------------------------------------------
-- Splash Link:   https://hr.phishingdomain.net?sid=24225
+- Splash Link: https://hr.phishingdomain.net?sid=24225
 - Redirect URL: https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=<USERNAME>&mkt=&lc=
 ----------------------------------------------------
 
 ----------------------------------------------------
-- Splash Link:   https://hr.phishingdomain.net?sid=22401
+- Splash Link: https://hr.phishingdomain.net?sid=22401
 - Redirect URL: https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=vic1@targetdomain.com&mkt=&lc=
 ----------------------------------------------------
 
 ----------------------------------------------------
-- Splash Link:   https://hr.phishingdomain.net?sid=87071
+- Splash Link: https://hr.phishingdomain.net?sid=87071
 - Redirect URL: https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=vic2@targetdomain.com&mkt=&lc=
 ----------------------------------------------------
 
 ----------------------------------------------------
-- Splash Link:   https://hr.phishingdomain.net?sid=84579
+- Splash Link: https://hr.phishingdomain.net?sid=84579
 - Redirect URL: https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=vic3@targetdomain.com&mkt=&lc=
 ----------------------------------------------------
 
