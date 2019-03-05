@@ -335,8 +335,9 @@ if __name__ == '__main__':
     # DEFINE A BASIC COMMANDLINE INTERFACE
     ######################################
 
-    parser = argparse.ArgumentParser(prog="Redirector thingy",
-        description="Redirection, etc.")
+    parser = argparse.ArgumentParser(prog='simple_redirect.py',
+        description='Redirect phishing victims to a different URL from a simp'\
+            'lified link.')
 
     
     subparsers = parser.add_subparsers(help='Sub-command help')

@@ -126,13 +126,13 @@ Below are a series of parameters that may be somewhat confusing due to naming co
 The server subcommand is used to configure and start the server. Limit verbose messages using the `-sl` flag and use the `dump` subcommand to extract logs/links from the database manually.
 
 ```    
-usage: Redirector thingy server [-h] [--db-file DB_FILE] --splash-url
-                                SPLASH_URL [--id-param ID_PARAM]
-                                [--interface INTERFACE] [--port PORT]
-                                [--cert-file CERT_FILE] [--key-file KEY_FILE]
-                                --redirect-url REDIRECT_URL
-                                [--redirect-url-file REDIRECT_URL_FILE]
-                                [--suppress-link-output]
+usage: simple_redirect.py server [-h] [--db-file DB_FILE] --splash-url
+                                 SPLASH_URL [--id-param ID_PARAM]
+                                 [--interface INTERFACE] [--port PORT]
+                                 [--cert-file CERT_FILE] [--key-file KEY_FILE]
+                                 --redirect-url REDIRECT_URL
+                                 [--redirect-url-file REDIRECT_URL_FILE]
+                                 [--suppress-link-output]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -166,7 +166,7 @@ optional arguments:
 The dump subcommand is used to dump links and logs from the database. This can be used while the server is running to limit verbose messages.
 
 ```
-usage: Redirector thingy dump [-h] [--db-file DB_FILE] --splash-url SPLASH_URL
+usage: simple_redirect.py dump [-h] [--db-file DB_FILE] --splash-url SPLASH_URL
                               [--id-param ID_PARAM] [--links | --access-logs]
 
 optional arguments:
