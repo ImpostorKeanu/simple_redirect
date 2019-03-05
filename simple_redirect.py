@@ -255,23 +255,31 @@ def url_watcher(sess,redirect_file,splash_url,id_param,suppress_stdout=False):
     '''
 
     sprint(f'Watching URL file: {redirect_file.name}')
-    sprint(yellow('To avoid having to restart the server, append new URLs to the '\
-        'file above for new links to be generated and printed to stdout'))
+    sprint(
+        yellow(
+            'To avoid having to restart the server, '\
+            'append new URLs to the file above for new links '\
+            'to be generated and printed to stdout'
+        )
+    )
+
 
     ruf = redirect_file
+
 
     try:
 
         while True:
+
+            ruf.seek(0)
             
-            redirect_file.seek(0)
-    
-            # ITERATE LINES FROM EMAIL FILE
+            # ITERATE LINES FROM EMAIL FILE....LAZY
             to_add = [
                 RedirectURL(value=ru.strip(),identifier=generate_identifier())
-                for ru in ruf if ruf.strip() and not
+                for ru in ruf if ru.strip() and not
                 sess.query(RedirectURL).filter(RedirectURL.value == ru.strip()).count()
             ]
+
     
             # ADD THE NEW URLS TO THE DATABASE
             if to_add:
@@ -286,9 +294,16 @@ def url_watcher(sess,redirect_file,splash_url,id_param,suppress_stdout=False):
                 sess.add_all(to_add)
                 sess.commit()
    
-                if not suppress_stdout: dump_urls(sess,splash_url,id_param)
-    
-    
+                if not suppress_stdout:
+                    dump_urls(sess,splash_url,id_param) 
+                    sprint(
+                        yellow(
+                            'To avoid having to restart the server, '\
+                            'append new URLs to the file above for new links '\
+                            'to be generated and printed to stdout'
+                        )
+                    )
+
             sleep(1)
 
     except:
@@ -322,33 +337,49 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(prog="Redirector thingy",
         description="Redirection, etc.")
-    parser.add_argument('--interface', '-i', default='0.0.0.0',
-        help="Interface/IP address the server will bind to.")
-    parser.add_argument('--port', '-p', default=443, type=int,
-        help="Port the server will listen on.")
-    parser.add_argument('--cert-file', '-c', default=None,
-        help="Certificate file for the server to uce")
-    parser.add_argument('--key-file', '-k', default=None,
-        help="Keyfile corresponding to certificate file")
-    parser.add_argument('--db-file', '-db', default='redirector_db.sqlite',
+
+    
+    subparsers = parser.add_subparsers(help='Sub-command help')
+    server_parser = subparsers.add_parser('server', help='Start the server')
+    server_parser.set_defaults(cmd='server')
+    server_parser.add_argument('--db-file', '-db', default='redirector_db.sqlite',
         help='Path to the appropriate SQLite file')
-    parser.add_argument('--splash-url', '-su', required=True,
+    server_parser.add_argument('--splash-url', '-su', required=True,
         help='URL which the id_param will be suffixed to.'),
-    parser.add_argument('--id-param', '-ip', default='sid',
+    server_parser.add_argument('--id-param', '-ip', default='sid',
         help='Name of the parameter that will be suffixed to the link URL.')
-    parser.add_argument('--redirect-url', '-ru', required=True,
+    server_parser.add_argument('--interface', '-i', default='0.0.0.0',
+        help="Interface/IP address the server will bind to.")
+    server_parser.add_argument('--port', '-p', default=443, type=int,
+        help="Port the server will listen on.")
+    server_parser.add_argument('--cert-file', '-c', default=None,
+        help="Certificate file for the server to uce")
+    server_parser.add_argument('--key-file', '-k', default=None,
+        help="Keyfile corresponding to certificate file")
+    server_parser.add_argument('--redirect-url', '-ru', required=True,
         help='Single or default url which targets will be redirected')
-    parser.add_argument('--redirect-url-file', '-ruf', required=False,
+    server_parser.add_argument('--redirect-url-file', '-ruf', required=False,
         help='Newline delimited file containing origin URLs that will be'\
             ' mapped back to a unique splash link')
-    parser.add_argument('--dump-links', '-dl', action='store_true',
-        help='Just dump splash links from the database.')
-    parser.add_argument('--dump-access-logs', '-da', action='store_true',
-        help='Dump access logs from the database')
-    parser.add_argument('--suppress-link-output','-sl', action='store_true',
+    server_parser.add_argument('--suppress-link-output','-sl', action='store_true',
         help='Suppress printing of links to stdout. Run the script again'\
             ' using the --dump-links flag to obtain links when using this'\
             ' option')
+
+    dumper_parser = subparsers.add_parser('dump',
+            help='Dump logs and links from the database')
+    dumper_parser.set_defaults(cmd='dumper')
+    dumper_parser.add_argument('--db-file', '-db', default='redirector_db.sqlite',
+        help='Path to the appropriate SQLite file')
+    dumper_parser.add_argument('--splash-url', '-su', required=True,
+        help='URL which the id_param will be suffixed to.'),
+    dumper_parser.add_argument('--id-param', '-ip', default='sid',
+        help='Name of the parameter that will be suffixed to the link URL.')
+    me_group = dumper_parser.add_mutually_exclusive_group()
+    me_group.add_argument('--links', '-dl', action='store_true',
+        help='Just dump splash links from the database.')
+    me_group.add_argument('--access-logs', '-dal', action='store_true',
+        help='Dump access logs from the database')
 
     args = parser.parse_args()
 
@@ -367,20 +398,22 @@ if __name__ == '__main__':
         Base.metadata.create_all(engine)
 
     sess = Session()
-    
-    if args.dump_links:
-        sprint('Dumping links to stdout\n')
-        dump_urls(sess, args.splash_url, args.id_param)
-        close_all_sessions()
-        sprint(red('Exiting'))
-        exit()
 
-    if args.dump_access_logs:
-        sprint('Dumping access logs to stdout')
-        dump_logs(sess, args.splash_url, args.id_param)
-        close_all_sessions()
-        sprint(red('Exiting'))
-        exit()
+    if args.cmd == 'dumper':
+    
+        if args.links:
+            sprint('Dumping links to stdout\n')
+            dump_urls(sess, args.splash_url, args.id_param)
+            close_all_sessions()
+            sprint(red('Exiting'))
+            exit()
+    
+        if args.access_logs:
+            sprint('Dumping access logs to stdout')
+            dump_logs(sess, args.splash_url, args.id_param)
+            close_all_sessions()
+            sprint(red('Exiting'))
+            exit()
 
     ##############################
     # HANDLE THE REDIRECT_URL_FILE
