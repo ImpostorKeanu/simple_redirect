@@ -200,7 +200,7 @@ def dump_urls(sess,splash_url,id_param):
 
         sep='-'*(slen+17)
         m=  f'{sep}\n- {yellow("Splash Link")}:   {u.splash_link}\n'\
-            f'- {yellow("Redirect Link")}: {u.redirect_url}\n{sep}\n'
+            f'- {yellow("Redirect URL")}: {u.redirect_url}\n{sep}\n'
         print(m)
 
 def get_max_len(lst,attr=None):
@@ -233,7 +233,7 @@ def dump_logs(sess,splash_url,id_param):
             tpl = ru.to_urltuple(splash_url,id_param) 
 
             m = f'-   {yellow("Splash Link")}: {tpl.splash_link}\n'\
-                f'- {yellow("Redirect Link")}: {tpl.redirect_url}\n'\
+                f'- {yellow("Redirect URL")}: {tpl.redirect_url}\n'\
                 f'- {yellow("Access Logs")}:\n\n'
 
             counter = 0
