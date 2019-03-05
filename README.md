@@ -25,10 +25,10 @@ A distinct process runs in the background and monitors the input file for new re
 
 The script inserts all URLs into an SQLite database and creates access logs tracking the time of access and source IP address.
 
-- Use the ```-da``` flag to dump access logs from the database (You'll need to supply required arguments as well).
+- Use the ```-dal``` flag to dump access logs from the database (You'll need to supply required arguments as well).
 
 ```
-python3.7 simple_redirect.py --splash-url https://hr.phishingdomain.net --redirect-url-file redirect_urls.txt --redirect-url https://fs.targetdomain.com -da
+python3.7 simple_redirect.py dump --splash-url https://hr.phishingdomain.net --redirect-url https://fs.targetdomain.com -da
 
 Initializing a Simple Redirector
 
@@ -50,7 +50,7 @@ Initializing a Simple Redirector
 If we want to redirect all users to Google from mydomain.com, just run: ```simple_redirect.py --splash-url http://www.mydomain.com --redirect-url https://www.google.com``` 
 
 ```
-python3.7 simple_redirect.py --splash-url https://hr.phishingdomain.com --redirect-url https://www.google.com
+python3.7 simple_redirect.py server --splash-url https://hr.phishingdomain.com --redirect-url https://www.google.com
     
 Initializing a Simple Redirector
 
@@ -61,7 +61,7 @@ Initializing a Simple Redirector
 
 ### Configuring wth HTTPS
 
-If we want to do a single redirect with TLS1.2, just run: ```simple_redirect.py --splash-url https://www.mydomain.com --redirect-url https://www.google.com --cert-file cert.pem --key-file key.pem```
+If we want to do a single redirect with TLS1.2, just run: ```simple_redirect.py server --splash-url https://www.mydomain.com --redirect-url https://www.google.com --cert-file cert.pem --key-file key.pem```
 
 ### Multiple Redirection URLs
 
@@ -80,7 +80,7 @@ Now let's generate some sample URLS for the grins and use the output as the ```-
 Now we can run the following command to have the script bring the server online and give us some fresh and concise splash links along with the full redirect URL for reference. Visiting the splash link will result in immediate redirection to the redirect link with the username field pre-populated.
 
 ```
-python3.7 simple_redirect.py --splash-url https://hr.phishingdomain.net --redirect-url-file redirect_urls.txt --redirect-url https://fs.targetdomain.com --cert-file cert.pem --key-file key.pem
+python3.7 simple_redirect.py server --splash-url https://hr.phishingdomain.net --redirect-url-file redirect_urls.txt --redirect-url https://fs.targetdomain.com --cert-file cert.pem --key-file key.pem
 
 Initializing a Simple Redirector
 
@@ -121,41 +121,63 @@ Below are a series of parameters that may be somewhat confusing due to naming co
 
 # Help Interface
 
-    usage: Redirector thingy [-h] [--interface INTERFACE] [--port PORT]
-                             [--cert-file CERT_FILE] [--key-file KEY_FILE]
-                             [--db-file DB_FILE] --splash-url SPLASH_URL
-                             [--id-param ID_PARAM] --redirect-url REDIRECT_URL
-                             [--redirect-url-file REDIRECT_URL_FILE]
-                             [--dump-links] [--dump-access-logs]
-                             [--suppress-link-output]
+## Server
 
-    Redirection, etc.
+The server subcommand is used to configure and start the server. Limit verbose messages using the `-sl` flag and use the `dump` subcommand to extract logs/links from the database manually.
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      --interface INTERFACE, -i INTERFACE
-                            Interface/IP address the server will bind to.
-      --port PORT, -p PORT  Port the server will listen on.
-      --cert-file CERT_FILE, -c CERT_FILE
-                            Certificate file for the server to uce
-      --key-file KEY_FILE, -k KEY_FILE
-                            Keyfile corresponding to certificate file
-      --db-file DB_FILE, -db DB_FILE
-                            Path to the appropriate SQLite file
-      --splash-url SPLASH_URL, -su SPLASH_URL
-                            URL which the id_param will be suffixed to.
-      --id-param ID_PARAM, -ip ID_PARAM
-                            Name of the parameter that will be suffixed to the
-                            link URL.
-      --redirect-url REDIRECT_URL, -ru REDIRECT_URL
-                            Single or default url which targets will be redirected
-      --redirect-url-file REDIRECT_URL_FILE, -ruf REDIRECT_URL_FILE
-                            Newline delimited file containing origin URLs that
-                            will be mapped back to a unique splash link
-      --dump-links, -dl     Just dump splash links from the database.
-      --dump-access-logs, -da
-                            Dump access logs from the database
-      --suppress-link-output, -sl
-                            Suppress printing of links to stdout. Run the script
-                            again using the --dump-links flag to obtain links when
-                            using this option
+```    
+usage: Redirector thingy server [-h] [--db-file DB_FILE] --splash-url
+                                SPLASH_URL [--id-param ID_PARAM]
+                                [--interface INTERFACE] [--port PORT]
+                                [--cert-file CERT_FILE] [--key-file KEY_FILE]
+                                --redirect-url REDIRECT_URL
+                                [--redirect-url-file REDIRECT_URL_FILE]
+                                [--suppress-link-output]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --db-file DB_FILE, -db DB_FILE
+                        Path to the appropriate SQLite file
+  --splash-url SPLASH_URL, -su SPLASH_URL
+                        URL which the id_param will be suffixed to.
+  --id-param ID_PARAM, -ip ID_PARAM
+                        Name of the parameter that will be suffixed to the
+                        link URL.
+  --interface INTERFACE, -i INTERFACE
+                        Interface/IP address the server will bind to.
+  --port PORT, -p PORT  Port the server will listen on.
+  --cert-file CERT_FILE, -c CERT_FILE
+                        Certificate file for the server to uce
+  --key-file KEY_FILE, -k KEY_FILE
+                        Keyfile corresponding to certificate file
+  --redirect-url REDIRECT_URL, -ru REDIRECT_URL
+                        Single or default url which targets will be redirected
+  --redirect-url-file REDIRECT_URL_FILE, -ruf REDIRECT_URL_FILE
+                        Newline delimited file containing origin URLs that
+                        will be mapped back to a unique splash link
+  --suppress-link-output, -sl
+                        Suppress printing of links to stdout. Run the script
+                        again using the --dump-links flag to obtain links when
+                        using this option
+```
+
+## Log/Link Dumper
+
+The dump subcommand is used to dump links and logs from the database. This can be used while the server is running to limit verbose messages.
+
+```
+usage: Redirector thingy dump [-h] [--db-file DB_FILE] --splash-url SPLASH_URL
+                              [--id-param ID_PARAM] [--links | --access-logs]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --db-file DB_FILE, -db DB_FILE
+                        Path to the appropriate SQLite file
+  --splash-url SPLASH_URL, -su SPLASH_URL
+                        URL which the id_param will be suffixed to.
+  --id-param ID_PARAM, -ip ID_PARAM
+                        Name of the parameter that will be suffixed to the
+                        link URL.
+  --links, -dl          Just dump splash links from the database.
+  --access-logs, -dal   Dump access logs from the database
+```
