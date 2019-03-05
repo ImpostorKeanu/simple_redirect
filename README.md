@@ -8,7 +8,7 @@ It works by bringing a simple HTTP(S) server to a listening state that will use 
 
 # Installation
 
-*Python3.6 or newer is required*. For all other requirements: ```python3.6 -m pip install -r requirements.txt```
+*Python3.6 or newer is required*. For all other requirements: `python3.6 -m pip install -r requirements.txt`
 
 # Useful Features
 
@@ -16,38 +16,22 @@ Below are a few useful features of this adorable little programming project.
 
 ## Redirect URL File Monitoring (Add Redirect URLs w/o Restarting the Server)
 
-A distinct process runs in the background and monitors the input file for new redirect urls, which will then result in new splash links being written to stdout. This means that new targets can be added without restarting the server. Simply append a new record to the input file and the script will handle the rest, e.g. ```echo https://fs.targetdomain.com?user=newuser >> redirect_urls``` will result in a new splash link being written to stdout.
+A distinct process runs in the background and monitors the input file for new redirect urls, which will then result in new splash links being written to stdout. This means that new targets can be added without restarting the server. Simply append a new record to the input file and the script will handle the rest, e.g. `echo https://fs.targetdomain.com?user=newuser >> redirect_urls` will result in a new splash link being written to stdout.
 
-- If you just want the links written to stdout, use the ```-dl``` flag to dump all splash links and origin URLs from the database and exit.
-- Link printing can be suppressed during normal operation using the ```-sl``` flag.
+- If you just want the links written to stdout, use the `-dl` flag to dump all splash links and origin URLs from the database and exit.
+- Link printing can be suppressed during normal operation using the `-sl` flag.
 
 ## Access Logs
 
 The script inserts all URLs into an SQLite database and creates access logs tracking the time of access and source IP address.
 
-- Use the ```-dal``` flag to dump access logs from the database (You'll need to supply required arguments as well).
-
-```
-python3.7 simple_redirect.py dump --splash-url https://hr.phishingdomain.net --redirect-url https://fs.targetdomain.com -da
-
-Initializing a Simple Redirector
-
-[+] Dumping access logs to stdout
-------------------------------------------------------------
-- Splash Link: https://hr.phishingdomain.net?sid=5747
-- Redirect URL: https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=vic2@targetdomain.com&mkt=&lc=
-- Access Logs:
-
-[1][2019-03-05 01:38:37] 192.168.86.2
-------------------------------------------------------------
-[+] Exiting
-```
+- Use the `-dal` flag to dump access logs from the database (You'll need to supply required arguments as well).
 
 ## Examples
 
 ### Single Redirection URL
 
-If we want to redirect all users to Google from mydomain.com, just run: ```simple_redirect.py --splash-url http://www.mydomain.com --redirect-url https://www.google.com``` 
+If we want to redirect all users to Google from mydomain.com, just run: `simple_redirect.py --splash-url http://www.mydomain.com --redirect-url https://www.google.com`
 
 ```
 python3.7 simple_redirect.py server --splash-url https://hr.phishingdomain.com --redirect-url https://www.google.com
@@ -61,21 +45,23 @@ Initializing a Simple Redirector
 
 ### Configuring wth HTTPS
 
-If we want to do a single redirect with TLS1.2, just run: ```simple_redirect.py server --splash-url https://www.mydomain.com --redirect-url https://www.google.com --cert-file cert.pem --key-file key.pem```
+If we want to do a single redirect with TLS1.2, just run: `simple_redirect.py server --splash-url https://www.mydomain.com --redirect-url https://www.google.com --cert-file cert.pem --key-file key.pem`
 
 ### Multiple Redirection URLs
 
 The real value with this script becomes evident when we feed it multiple redirect URLs, each of which will be translated to concise URLs suffixed only with a unique integer parameter.
 
-For the sake of simplicity, let's say we're targeting users of ```targetdomain.com``` for attack and we want to have victims authenticate to an upstream ADFS server through Modlishka. We can craft some links with custom URL parameters to make the attack more authentic by molding it to our pretext. ADFS endpoints will take the value from the ```username``` parameter and pre-fill it in the username field of the authentication form. Here is the base link we'll be working with (note that it's quite ugly):
+For the sake of simplicity, let's say we're targeting users of `targetdomain.com` for attack and we want to have victims authenticate to an upstream ADFS server through Modlishka. We can craft some links with custom URL parameters to make the attack more authentic by molding it to our pretext. ADFS endpoints will take the value from the `username` parameter and pre-fill it in the username field of the authentication form. Here is the base link we'll be working with (note that it's quite ugly):
 
 
     https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=<USERNAME_HERE>&mkt=&lc=
 
 
-Now let's generate some sample URLS for the grins and use the output as the ```--redirect-url-file``` parameter.
+Now let's generate some sample URLS for the grins and use the output as the `--redirect-url-file` parameter.
 
-    for u in {vic1,vic2,vic3}; do echo $URL | sed -r -r "s/<USERNAME>/$u@targetdomain.com/g" >> redirect_urls.txt; done
+```
+for u in {vic1,vic2,vic3}; do echo $URL | sed -r -r "s/<USERNAME>/$u@targetdomain.com/g" >> redirect_urls.txt; done
+```
 
 Now we can run the following command to have the script bring the server online and give us some fresh and concise splash links along with the full redirect URL for reference. Visiting the splash link will result in immediate redirection to the redirect link with the username field pre-populated.
 
@@ -111,13 +97,25 @@ Initializing a Simple Redirector
 [+] Wrapping the HTTP server socket in TLS1.2
 ```
 
-# Basic Terminology
+## Dumping Access Logs
 
-Below are a series of parameters that may be somewhat confusing due to naming conventions. This should provide some level of clarity.
+The following command can be used to dump all access logs.
 
-- ```splash_link``` - A link intended to be delivered to some user. Typically shortened or simplified and crafted to support the pretext of a given social engineering engagement.
-- ```redirect_url``` - The URL that is returned in the body of the HTTP response that the browser will be redirected to. This parameter is also the default URL that a user will be delivered to should an unknown request be sent to the HTTP server.
-- ```redirect_file``` - A file containing a series of redirect URLs that will be imported to the SQLite database file.
+```
+python3.7 simple_redirect.py dump --splash-url https://hr.phishingdomain.net --redirect-url https://fs.targetdomain.com -da
+
+Initializing a Simple Redirector
+
+[+] Dumping access logs to stdout
+------------------------------------------------------------
+- Splash Link: https://hr.phishingdomain.net?sid=5747
+- Redirect URL: https://fs.targetdomain.com/adfs/ls/?client-request-id=826a908e-c842-488c-8ade-3a95778dd5cc&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=LoginOptions%3D3%26estsredirect%3d2%26estsrequest%3drQIIAY2Rv4vTUADHL00vcjeoiDi46CAIQpqXvDS_QDCv7V25pkRbQ69dyiXNS5tr-mLz0pQiCE5yqHRxcdPBoaM4iH-BHA5dXDo4OImTON2mLS5u-h0-fNfv53uLFQuicQP8icRvyAOMRd7zN-2vjC_tXnw-Dx-jj0-rJ1-MF9mzz58WzLU-pXFiCAJJ6ZCQ4wLBeOD5BY9EAsmOhPcMs2SYRU5VoKIpmippxXXRoazrBVAEut7DHi9BHfKyhyGvu1qRF6HoAs3DiuxKq9wF20xpX9qAjAcz_2duB5Nx1I1JQl-yD8vtyUG5bQYVE6GBatbQXmTDtj9Fs8Ts26E13UcJhLDeKcthv2GG9Vm5mVTu1StlFFA7KJbQrOFaWd8exo29YODUMuB0cONB0HRcqyTJbqnVPVaVbmxhoI_sybR76ACK-cldp7pg_8vcW5Zb64jI6JTlSOyPBr2v7BXqJ5TciXrp2E9IOvb8ZONsmWe-53Pg_Fmeeb29Fv7m5PDX2fJq7R19BR-tbm6dbgv-_kiwAoCEo7BVkogz9YdBZqOD-8VpNaw1O8ikba9EYSvVbkNDnHPMnOO-ccwPjnlybuvDzr8eW-1eloCo8-tNknpdlA0gGgB2fgM1&cbcxt=&username=vic2@targetdomain.com&mkt=&lc=
+- Access Logs:
+
+[1][2019-03-05 01:38:37] 192.168.86.2
+------------------------------------------------------------
+[+] Exiting
+```
 
 # Help Interface
 
@@ -181,3 +179,11 @@ optional arguments:
   --links, -dl          Just dump splash links from the database.
   --access-logs, -dal   Dump access logs from the database
 ```
+
+# Basic Terminology
+
+Below are a series of parameters that may be somewhat confusing due to naming conventions. This should provide some level of clarity.
+
+- ```splash_link``` - A link intended to be delivered to some user. Typically shortened or simplified and crafted to support the pretext of a given social engineering engagement.
+- ```redirect_url``` - The URL that is returned in the body of the HTTP response that the browser will be redirected to. This parameter is also the default URL that a user will be delivered to should an unknown request be sent to the HTTP server.
+- ```redirect_file``` - A file containing a series of redirect URLs that will be imported to the SQLite database file.
