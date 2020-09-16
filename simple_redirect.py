@@ -2,7 +2,6 @@ import argparse
 from ssl import wrap_socket,PROTOCOL_TLSv1_2 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse,parse_qs
-from OpenSSL import crypto, SSL
 from random import randint
 from pathlib import Path
 from multiprocessing import Process
@@ -12,6 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, backref, sessionmaker, close_all_sessions
 from sqlalchemy.ext.declarative import declarative_base
 from collections import namedtuple
+from sys import exit
 
 URLTuple = namedtuple('URLTuple',['splash_link','redirect_url'])
 
@@ -264,19 +264,16 @@ def url_watcher(sess,redirect_file,splash_url,id_param,suppress_stdout=False):
     )
 
 
-    ruf = redirect_file
-
-
     try:
 
         while True:
 
-            ruf.seek(0)
+            redirect_file.seek(0)
             
             # ITERATE LINES FROM EMAIL FILE....LAZY
             to_add = [
                 RedirectURL(value=ru.strip(),identifier=generate_identifier())
-                for ru in ruf if ru.strip() and not
+                for ru in redirect_file if ru.strip() and not
                 sess.query(RedirectURL).filter(RedirectURL.value == ru.strip()).count()
             ]
 
@@ -305,10 +302,12 @@ def url_watcher(sess,redirect_file,splash_url,id_param,suppress_stdout=False):
                     )
 
             sleep(1)
+            to_add.clear()
 
-    except:
+    except Exception as e:
 
-        return
+        sprint('Unhandled exception occurred while starting ' \
+            f'watcher:\n\n{e}')
     
 def generate_identifier(min=1,max=120000):
     '''
@@ -336,14 +335,16 @@ if __name__ == '__main__':
     ######################################
 
     parser = argparse.ArgumentParser(prog='simple_redirect.py',
-        description='Redirect phishing victims to a different URL from a simp'\
-            'lified link.')
-
+        description='Redirect phishing victims to a different URL ' \
+                'from a simplified link.')
     
     subparsers = parser.add_subparsers(help='Sub-command help')
-    server_parser = subparsers.add_parser('server', help='Start the server')
+
+    server_parser = subparsers.add_parser('server',
+            help='Start the server')
     server_parser.set_defaults(cmd='server')
-    server_parser.add_argument('--db-file', '-db', default='redirector_db.sqlite',
+    server_parser.add_argument('--db-file', '-db',
+            default='redirector_db.sqlite',
         help='Path to the appropriate SQLite file')
     server_parser.add_argument('--splash-url', '-su', required=True,
         help='URL which the id_param will be suffixed to.'),
@@ -385,6 +386,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print(green('\nInitializing a Simple Redirector\n'))
+
+    try:
+        if args.cmd not in ['server','dumper']:
+            parser.print_help()
+            exit()
+    except Exception as e:
+        parser.print_help()
+        exit()
     
     # Create a factory from which all sessions are created
     engine = create_engine('sqlite:///'+args.db_file)
